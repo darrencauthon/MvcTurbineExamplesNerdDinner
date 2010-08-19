@@ -4,6 +4,8 @@ using System.Globalization;
 using System.Security.Principal;
 using System.Web.Mvc;
 using System.Web.Security;
+using NerdDinner.Accounts.Models;
+using NerdDinner.Models;
 
 namespace NerdDinner.Controllers
 {
@@ -68,18 +70,21 @@ namespace NerdDinner.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Register(string userName, string email, string password, string confirmPassword)
+        public ActionResult Register(RegisterInputModel registerInputModel)
         {
             ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
 
-            if (ValidateRegistration(userName, email, password, confirmPassword))
+            if (ValidateRegistration(registerInputModel.UserName, 
+                registerInputModel.Email, 
+                registerInputModel.Password, 
+                registerInputModel.ConfirmPassword))
             {
                 // Attempt to register the user
-                var createStatus = MembershipService.CreateUser(userName, password, email);
+                var createStatus = MembershipService.CreateUser(registerInputModel.UserName, registerInputModel.Password, registerInputModel.Email);
 
                 if (createStatus == MembershipCreateStatus.Success)
                 {
-                    FormsAuth.SignIn(userName, false /* createPersistentCookie */);
+                    FormsAuth.SignIn(registerInputModel.UserName, false /* createPersistentCookie */);
                     return RedirectToAction("Index", "Home");
                 }
                 else

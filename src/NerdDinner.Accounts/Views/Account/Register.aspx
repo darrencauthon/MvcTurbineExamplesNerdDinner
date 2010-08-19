@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<NerdDinner.Accounts.Models.RegisterInputModel>" %>
 
 <asp:Content ID="Title" ContentPlaceHolderID="TitleContent" runat="server">
     Register
@@ -19,24 +19,24 @@
             <fieldset>
                 <legend>Account Information</legend>
                 <p>
-                    <label for="username">Username:</label>
-                    <%= Html.TextBox("username") %>
-                    <%= Html.ValidationMessage("username") %>
+                    <%=Html.LabelFor(x=>x.UserName) %>
+                    <%= Html.EditorFor(x=>x.UserName) %>
+                    <%=Html.ValidationMessageFor(x=>x.UserName) %>
                 </p>
                 <p>
-                    <label for="email">Email:</label>
-                    <%= Html.TextBox("email") %>
-                    <%= Html.ValidationMessage("email") %>
+                    <%=Html.LabelFor(x=>x.Email) %>
+                    <%= Html.EditorFor(x=>x.Email) %>
+                    <%=Html.ValidationMessageFor(x=>x.Email) %>
                 </p>
                 <p>
-                    <label for="password">Password:</label>
-                    <%= Html.Password("password") %>
-                    <%= Html.ValidationMessage("password") %>
+                    <%=Html.LabelFor(x => x.Password)%>
+                    <%= Html.EditorFor(x => x.Password)%>
+                    <%=Html.ValidationMessageFor(x=>x.Password) %>
                 </p>
                 <p>
-                    <label for="confirmPassword">Confirm password:</label>
-                    <%= Html.Password("confirmPassword") %>
-                    <%= Html.ValidationMessage("confirmPassword") %>
+                    <%=Html.LabelFor(x => x.ConfirmPassword)%>
+                    <%= Html.EditorFor(x => x.ConfirmPassword)%>
+                    <%=Html.ValidationMessageFor(x=>x.ConfirmPassword) %>
                 </p>
                 <p>
                     <input type="submit" value="Register" />
