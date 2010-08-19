@@ -7,8 +7,10 @@ using System.Xml.Linq;
 using NerdDinner.Helpers;
 using NerdDinner.Models;
 
-namespace NerdDinner.Controllers {
-    public class JsonDinner {
+namespace NerdDinner.Controllers
+{
+    public class JsonDinner
+    {
         public int DinnerID { get; set; }
         public DateTime EventDate { get; set; }
         public string Title { get; set; }
@@ -20,10 +22,12 @@ namespace NerdDinner.Controllers {
     }
 
     [HandleErrorWithELMAH]
-    public class SearchController : Controller {
+    public class SearchController : Controller
+    {
         private readonly IDinnerRepository dinnerRepository;
 
-        public SearchController(IDinnerRepository repository) {
+        public SearchController(IDinnerRepository repository)
+        {
             dinnerRepository = repository;
         }
 
@@ -31,25 +35,28 @@ namespace NerdDinner.Controllers {
         // AJAX: /Search/FindByLocation?longitude=45&latitude=-90
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult SearchByLocation(float latitude, float longitude) {
-            IQueryable<Dinner> dinners = dinnerRepository.FindByLocation(latitude, longitude);
+        public ActionResult SearchByLocation(float latitude, float longitude)
+        {
+            var dinners = dinnerRepository.FindByLocation(latitude, longitude);
 
-            IQueryable<JsonDinner> jsonDinners = from dinner in dinners
-                                                 select JsonDinnerFromDinner(dinner);
+            var jsonDinners = from dinner in dinners
+                              select JsonDinnerFromDinner(dinner);
 
             return Json(jsonDinners.ToList());
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult SearchByPlaceNameOrZip(string placeOrZip) {
+        public ActionResult SearchByPlaceNameOrZip(string placeOrZip)
+        {
             if (String.IsNullOrEmpty(placeOrZip)) return null;
             ;
 
-            string url = "http://ws.geonames.org/postalCodeSearch?{0}={1}&maxRows=1&style=SHORT";
+            var url = "http://ws.geonames.org/postalCodeSearch?{0}={1}&maxRows=1&style=SHORT";
             url = String.Format(url, IsNumeric(placeOrZip) ? "postalcode" : "placename", placeOrZip);
 
             var result = ControllerContext.HttpContext.Cache[placeOrZip] as XDocument;
-            if (result == null) {
+            if (result == null)
+            {
                 result = XDocument.Load(url);
                 ControllerContext.HttpContext.Cache.Insert(placeOrZip, result, null, DateTime.Now.AddDays(1),
                                                            Cache.NoSlidingExpiration);
@@ -58,11 +65,11 @@ namespace NerdDinner.Controllers {
             var LatLong = (from x in result.Descendants("code")
                            select new
                                       {
-                                          Lat = (float)x.Element("lat"),
-                                          Long = (float)x.Element("lng")
+                                          Lat = (float) x.Element("lat"),
+                                          Long = (float) x.Element("lng")
                                       }).First();
 
-            IOrderedQueryable<Dinner> dinners = dinnerRepository.
+            var dinners = dinnerRepository.
                 FindByLocation(LatLong.Lat, LatLong.Long).
                 OrderByDescending(p => p.EventDate);
 
@@ -70,7 +77,8 @@ namespace NerdDinner.Controllers {
         }
 
         // IsNumeric Function
-        private bool IsNumeric(object Expression) {
+        private bool IsNumeric(object Expression)
+        {
             // Variable to collect the Return value of the TryParse method.
             bool isNum;
 
@@ -89,21 +97,23 @@ namespace NerdDinner.Controllers {
         // AJAX: /Search/GetMostPopularDinners?limit=5
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult GetMostPopularDinners(int? limit) {
-            IQueryable<Dinner> dinners = dinnerRepository.FindUpcomingDinners();
+        public ActionResult GetMostPopularDinners(int? limit)
+        {
+            var dinners = dinnerRepository.FindUpcomingDinners();
 
             // Default the limit to 40, if not supplied.
             if (!limit.HasValue)
                 limit = 40;
 
-            IQueryable<JsonDinner> mostPopularDinners = from dinner in dinners
-                                                        orderby dinner.RSVPs.Count descending
-                                                        select JsonDinnerFromDinner(dinner);
+            var mostPopularDinners = from dinner in dinners
+                                     orderby dinner.RSVPs.Count descending
+                                     select JsonDinnerFromDinner(dinner);
 
             return Json(mostPopularDinners.Take(limit.Value).ToList());
         }
 
-        private JsonDinner JsonDinnerFromDinner(Dinner dinner) {
+        private JsonDinner JsonDinnerFromDinner(Dinner dinner)
+        {
             return new JsonDinner
                        {
                            DinnerID = dinner.DinnerID,

@@ -1,7 +1,9 @@
 ﻿using System.Web.Mvc;
 
-namespace NerdDinner.Controllers {
+namespace NerdDinner.Controllers
+{
     [HandleErrorWithELMAH]
-    public class HomeController : Controller {
+    public class HomeController : Controller
+    {
     }
 }

@@ -4,14 +4,15 @@ using System.Web.Mvc;
 using NerdDinner.Helpers;
 using NerdDinner.Models;
 
-namespace NerdDinner.Controllers {
-
+namespace NerdDinner.Controllers
+{
     [HandleErrorWithELMAH]
-    public class DinnersController : Controller {
-
+    public class DinnersController : Controller
+    {
         private readonly IDinnerRepository dinnerRepository;
 
-        public DinnersController(IDinnerRepository repository) {
+        public DinnersController(IDinnerRepository repository)
+        {
             dinnerRepository = repository;
         }
 
@@ -19,8 +20,8 @@ namespace NerdDinner.Controllers {
         // GET: /Dinners/
         //      /Dinners/Page/2
 
-        public ActionResult Index(int? page) {
-
+        public ActionResult Index(int? page)
+        {
             const int pageSize = 25;
 
             var upcomingDinners = dinnerRepository.FindUpcomingDinners();
@@ -32,15 +33,18 @@ namespace NerdDinner.Controllers {
         //
         // GET: /Dinners/Details/5
 
-        public ActionResult Details(int? id) {
-            if (id == null) {
-                return new FileNotFoundResult { Message = "No Dinner found due to invalid dinner id" };
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new FileNotFoundResult {Message = "No Dinner found due to invalid dinner id"};
             }
 
-            Dinner dinner = dinnerRepository.GetDinner(id.Value);
+            var dinner = dinnerRepository.GetDinner(id.Value);
 
-            if (dinner == null) {
-                return new FileNotFoundResult { Message = "No Dinner found for that id" };
+            if (dinner == null)
+            {
+                return new FileNotFoundResult {Message = "No Dinner found for that id"};
             }
 
             return View(dinner);
@@ -50,9 +54,9 @@ namespace NerdDinner.Controllers {
         // GET: /Dinners/Edit/5
 
         [Authorize]
-        public ActionResult Edit(int id) {
-
-            Dinner dinner = dinnerRepository.GetDinner(id);
+        public ActionResult Edit(int id)
+        {
+            var dinner = dinnerRepository.GetDinner(id);
 
             if (!dinner.IsHostedBy(User.Identity.Name))
                 return View("InvalidOwner");
@@ -64,20 +68,23 @@ namespace NerdDinner.Controllers {
         // POST: /Dinners/Edit/5
 
         [AcceptVerbs(HttpVerbs.Post), Authorize]
-        public ActionResult Edit(int id, FormCollection collection) {
-
-            Dinner dinner = dinnerRepository.GetDinner(id);
+        public ActionResult Edit(int id, FormCollection collection)
+        {
+            var dinner = dinnerRepository.GetDinner(id);
 
             if (!dinner.IsHostedBy(User.Identity.Name))
                 return View("InvalidOwner");
 
-            try {
+            try
+            {
                 UpdateModel(dinner);
 
                 dinnerRepository.Save();
 
-                return RedirectToAction("Details", new { id = dinner.DinnerID });
-            } catch {
+                return RedirectToAction("Details", new {id = dinner.DinnerID});
+            }
+            catch
+            {
                 ModelState.AddModelErrors(dinner.GetRuleViolations());
 
                 return View(new DinnerFormViewModel(dinner));
@@ -88,12 +95,12 @@ namespace NerdDinner.Controllers {
         // GET: /Dinners/Create
 
         [Authorize]
-        public ActionResult Create() {
-
-            Dinner dinner = new Dinner()
-            {
-                EventDate = DateTime.Now.AddDays(7)
-            };
+        public ActionResult Create()
+        {
+            var dinner = new Dinner
+                             {
+                                 EventDate = DateTime.Now.AddDays(7)
+                             };
 
             return View(new DinnerFormViewModel(dinner));
         }
@@ -102,22 +109,25 @@ namespace NerdDinner.Controllers {
         // POST: /Dinners/Create
 
         [AcceptVerbs(HttpVerbs.Post), Authorize]
-        public ActionResult Create(Dinner dinner) {
-
-            if (ModelState.IsValid) {
-
-                try {
+        public ActionResult Create(Dinner dinner)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
                     dinner.HostedBy = User.Identity.Name;
 
-                    RSVP rsvp = new RSVP();
+                    var rsvp = new RSVP();
                     rsvp.AttendeeName = User.Identity.Name;
                     dinner.RSVPs.Add(rsvp);
 
                     dinnerRepository.Add(dinner);
                     dinnerRepository.Save();
 
-                    return RedirectToAction("Details", new { id = dinner.DinnerID });
-                } catch {
+                    return RedirectToAction("Details", new {id = dinner.DinnerID});
+                }
+                catch
+                {
                     ModelState.AddModelErrors(dinner.GetRuleViolations());
                 }
             }
@@ -129,9 +139,9 @@ namespace NerdDinner.Controllers {
         // HTTP GET: /Dinners/Delete/1
 
         [Authorize]
-        public ActionResult Delete(int id) {
-
-            Dinner dinner = dinnerRepository.GetDinner(id);
+        public ActionResult Delete(int id)
+        {
+            var dinner = dinnerRepository.GetDinner(id);
 
             if (dinner == null)
                 return View("NotFound");
@@ -146,9 +156,9 @@ namespace NerdDinner.Controllers {
         // HTTP POST: /Dinners/Delete/1
 
         [AcceptVerbs(HttpVerbs.Post), Authorize]
-        public ActionResult Delete(int id, string confirmButton) {
-
-            Dinner dinner = dinnerRepository.GetDinner(id);
+        public ActionResult Delete(int id, string confirmButton)
+        {
+            var dinner = dinnerRepository.GetDinner(id);
 
             if (dinner == null)
                 return View("NotFound");
@@ -162,15 +172,18 @@ namespace NerdDinner.Controllers {
             return View("Deleted");
         }
 
-        protected override void HandleUnknownAction(string actionName) {
+        protected override void HandleUnknownAction(string actionName)
+        {
             throw new HttpException(404, "Action not found");
         }
 
-        public ActionResult Confused() {
+        public ActionResult Confused()
+        {
             return View();
         }
 
-        public ActionResult Trouble() {
+        public ActionResult Trouble()
+        {
             return View("Error");
         }
     }

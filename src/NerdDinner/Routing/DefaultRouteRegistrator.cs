@@ -1,12 +1,13 @@
-﻿namespace NerdDinner.Routing {
-    using System.Web.Mvc;
-    using System.Web.Routing;
-    using MvcTurbine.Routing;
+﻿using System.Web.Mvc;
+using System.Web.Routing;
+using MvcTurbine.Routing;
 
-    public class DefaultRouteRegistrator : IRouteRegistrator {
-        #region IRouteRegistrator Members
-
-        public void Register(RouteCollection routes) {
+namespace NerdDinner.Routing
+{
+    public class DefaultRouteRegistrator : IRouteRegistrator
+    {
+        public void Register(RouteCollection routes)
+        {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
@@ -28,7 +29,5 @@
                 new {controller = "Home", action = "Index", id = ""} // Parameter defaults
                 );
         }
-
-        #endregion
     }
 }

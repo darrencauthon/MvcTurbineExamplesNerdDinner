@@ -12,7 +12,7 @@ namespace NerdDinner
         {
             base.OnException(context);
 
-            Exception e = context.Exception;
+            var e = context.Exception;
             if (!context.ExceptionHandled // if unhandled, will be logged anyhow
                 || RaiseErrorSignal(e) // prefer signaling, if possible
                 || IsFiltered(context)) // filtered?
@@ -23,10 +23,10 @@ namespace NerdDinner
 
         private static bool RaiseErrorSignal(Exception e)
         {
-            HttpContext context = HttpContext.Current;
+            var context = HttpContext.Current;
             if (context == null)
                 return false;
-            ErrorSignal signal = ErrorSignal.FromContext(context);
+            var signal = ErrorSignal.FromContext(context);
             if (signal == null)
                 return false;
             signal.Raise(e, context);
@@ -49,7 +49,7 @@ namespace NerdDinner
 
         private static void LogException(Exception e)
         {
-            HttpContext context = HttpContext.Current;
+            var context = HttpContext.Current;
             ErrorLog.GetDefault(context).Log(new Error(e, context));
         }
     }
