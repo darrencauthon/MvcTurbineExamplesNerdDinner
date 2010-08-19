@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NerdDinner.Accounts")]
+[assembly: AssemblyTitle("NerdDinner.Shared")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("DEG")]
-[assembly: AssemblyProduct("NerdDinner.Accounts")]
+[assembly: AssemblyProduct("NerdDinner.Shared")]
 [assembly: AssemblyCopyright("Copyright © DEG 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("308a0606-9a93-488c-b07f-7781832cea47")]
+[assembly: Guid("eae412ac-fca5-4848-8e0f-75974949a2e0")]
 
 // Version information for an assembly consists of the following four values:
 //

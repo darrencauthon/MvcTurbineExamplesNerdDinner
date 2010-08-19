@@ -1,4 +1,4 @@
-﻿namespace NerdDinner.Accounts.Models
+﻿namespace NerdDinner.Models
 {
     public class RegisterInputModel
     {

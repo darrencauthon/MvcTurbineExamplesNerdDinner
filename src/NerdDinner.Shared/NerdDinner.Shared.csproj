@@ -6,12 +6,12 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{CC362FB7-3FD4-4D0A-BF4A-44B65C26A1EA}</ProjectGuid>
+    <ProjectGuid>{C05B74BF-D926-41C7-96BC-811878C13040}</ProjectGuid>
     <ProjectTypeGuids>{F85E285D-A4E0-4152-9332-AB1D724D3325};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NerdDinner.Accounts</RootNamespace>
-    <AssemblyName>NerdDinner.Accounts</AssemblyName>
+    <RootNamespace>NerdDinner.Shared</RootNamespace>
+    <AssemblyName>NerdDinner.Shared</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <TargetFrameworkProfile />
@@ -55,14 +55,9 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\RegisterInputModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\Account\ChangePassword.aspx" />
-    <EmbeddedResource Include="Views\Account\ChangePasswordSuccess.aspx" />
-    <EmbeddedResource Include="Views\Account\LogOn.aspx" />
-    <EmbeddedResource Include="Views\Account\Register.aspx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -74,6 +69,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="Models\" />
     <Folder Include="Views\Shared\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -91,7 +88,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>52180</DevelopmentServerPort>
+          <DevelopmentServerPort>52760</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>
